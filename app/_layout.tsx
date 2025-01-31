@@ -1,39 +1,32 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { useState } from "react"
+import { View, ActivityIndicator } from "react-native"
+import * as Font from "expo-font"
+import { Slot } from "expo-router"
+import { fontFamily } from "../constants/theme"
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const loadFonts = () => {
+    return Font.loadAsync({
+        [fontFamily.regular]: require("../assets/fonts/SpaceGrotesk-Regular.ttf"),
+        [fontFamily.bold]: require("../assets/fonts/SpaceGrotesk-Bold.ttf"),
+        [fontFamily.semiBold]: require("../assets/fonts/SpaceGrotesk-SemiBold.ttf"),
+        [fontFamily.light]: require("../assets/fonts/SpaceGrotesk-Light.ttf"),
+        [fontFamily.medium]: require("../assets/fonts/SpaceGrotesk-Medium.ttf")
+    })
+}
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+export default function Layout() {
+    const [fontsLoaded, setFontsLoaded] = useState(false)
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (!fontsLoaded) {
+        loadFonts().then(() => setFontsLoaded(true))
+        return (
+            <ActivityIndicator size="large" color="black" />
+        )
     }
-  }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    return (
+        <View style={{ flex: 1 }}>
+            <Slot />
+        </View>
+    )
 }
