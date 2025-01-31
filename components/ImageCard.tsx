@@ -1,14 +1,21 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Image, StyleSheet, Text, View } from "react-native"
+import React from "react"
 
-const ImageCard = () => {
-  return (
-    <View>
-      <Text>ImageCard</Text>
-    </View>
-  );
-};
+const ImageCard = ({ item }) => {
+    return (
+        <View style={styles.container}>
+            <Image
+                source={{ uri: item.imageUrl }}
+                style={{ flex: 1 , height: 200, width: 200 }}
+            />
+        </View>
+    )
+}
 
-export default ImageCard;
+export default ImageCard
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+})

@@ -7,22 +7,23 @@ import {
     Entypo,
     Ionicons
 } from "@expo/vector-icons"
-import { colors } from "../constants/theme"
+import { useTheme } from "@/constants/ThemeContext"
 
 const Tab = createBottomTabNavigator()
 
 export default function App() {
+    const { theme } = useTheme()
     return (
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
                 tabBarStyle: {
-                    backgroundColor: colors.primary
+                    backgroundColor: theme.background
                 },
                 tabBarInactiveTintColor:
-                    colors.inactiveTabColor,
+                    theme.inactiveTabColor,
                 tabBarActiveTintColor:
-                    colors.activeTabColor,
+                    theme.activeTabColor,
                 tabBarShowLabel: false
             }}
         >

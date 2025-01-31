@@ -1,11 +1,16 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { View, ActivityIndicator } from "react-native"
 import * as Font from "expo-font"
 import { Slot } from "expo-router"
-import { fontFamily } from "../constants/theme"
+import { StatusBar } from "expo-status-bar"
+import { fontFamily } from "@/constants/fonts"
+import {
+    ThemeProvider,
+    useTheme
+} from "@/constants/ThemeContext"
 
-const loadFonts = () => {
-    return Font.loadAsync({
+const loadFonts = async () => {
+    await Font.loadAsync({
         [fontFamily.regular]: require("../assets/fonts/SpaceGrotesk-Regular.ttf"),
         [fontFamily.bold]: require("../assets/fonts/SpaceGrotesk-Bold.ttf"),
         [fontFamily.semiBold]: require("../assets/fonts/SpaceGrotesk-SemiBold.ttf"),
@@ -17,15 +22,34 @@ const loadFonts = () => {
 export default function Layout() {
     const [fontsLoaded, setFontsLoaded] = useState(false)
 
-    if (!fontsLoaded) {
+    useEffect(() => {
         loadFonts().then(() => setFontsLoaded(true))
+    }, [])
+
+    if (!fontsLoaded) {
         return (
             <ActivityIndicator size="large" color="black" />
         )
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <ThemeProvider>
+            <ThemedLayout />
+        </ThemeProvider>
+    )
+}
+
+function ThemedLayout() {
+    const { theme } = useTheme() // Get the current theme (light/dark)
+
+    return (
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: theme.background
+            }}
+        >
+            <StatusBar style={theme.statusBarStyle} />
             <Slot />
         </View>
     )

@@ -9,16 +9,17 @@ import {
     View
 } from "react-native"
 import React, { useState } from "react"
-import { colors, fontFamily } from "../../constants/theme"
+import { fontFamily } from "../../constants/fonts"
 import { Ionicons } from "@expo/vector-icons"
 import ImageCard from "@/components/ImageCard"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { useTheme } from "@/constants/ThemeContext"
 
 const HomeScreen = () => {
+    const { theme } = useTheme()
     const [prompt, setPrompt] = useState("")
     const [loading, setLoading] = useState(false)
-    const [image, setImage] = useState(
-        "https://singularityhub.com/uploads/2019/01/robot-artificial-intelligence-avatar_shutterstock_1121111882.jpg?auto=webp"
-    )
+    const [image, setImage] = useState("")
 
     const handleOpenLink = () => {
         const url = "https://github.com/nzemia"
@@ -28,93 +29,137 @@ const HomeScreen = () => {
     }
 
     return (
-        <ScrollView
-            contentContainerStyle={styles.container}
+        <SafeAreaView
+            style={{
+                flex: 1,
+                backgroundColor: theme.background
+            }}
         >
-            <View style={styles.appLogo}>
-                <Text style={styles.appName}>DreamAI</Text>
-
-                <TouchableOpacity onPress={handleOpenLink}>
-                    <Text style={styles.madeBy}>
-                        Click{" "}
-                        <Text style={styles.name}>
-                            Nzemia{" "}
-                        </Text>
-                        to view more of my work
+            <ScrollView
+                contentContainerStyle={[
+                    styles.container,
+                    {
+                        backgroundColor: theme.background
+                    }
+                ]}
+            >
+                <View style={styles.appLogo}>
+                    <Text
+                        style={[
+                            styles.appName,
+                            { color: theme.primary }
+                        ]}
+                    >
+                        DreamAI
                     </Text>
-                </TouchableOpacity>
-            </View>
 
-            {/**Input container */}
-            <View style={styles.textInputWrapper}>
-                <View style={styles.textInputContainer}>
-                    {}
-                    <TextInput
-                        placeholder="Enter your prompt here..."
-                        placeholderTextColor={"#808080"}
-                        multiline
-                        style={styles.textInput}
-                        value={prompt}
-                        onChangeText={setPrompt}
-                    />
-                    {prompt ? (
-                        <TouchableOpacity
-                            style={styles.clearButton}
-                        >
-                            <Ionicons
-                                name={"trash-bin-outline"}
-                                size={24}
-                                color={colors.secondary}
-                            />
-                        </TouchableOpacity>
-                    ) : null}
+                    <TouchableOpacity
+                        onPress={handleOpenLink}
+                    >
+                        <Text style={styles.madeBy}>
+                            Click{" "}
+                            <Text style={styles.name}>
+                                Nzemia{" "}
+                            </Text>
+                            to view more of my work
+                        </Text>
+                    </TouchableOpacity>
                 </View>
-            </View>
 
-            {/**Generate button */}
-            <TouchableOpacity style={styles.generateButton}>
-                {loading ? (
-                    <ActivityIndicator
-                        size="small"
-                        color="#fff"
-                    />
-                ) : (
-                    <Text style={styles.generateText}>
-                        Generate
+                {/**Input container */}
+                <View style={styles.textInputWrapper}>
+                    <View style={styles.textInputContainer}>
+                        {}
+                        <TextInput
+                            placeholder="Enter your prompt here..."
+                            placeholderTextColor={"#808080"}
+                            multiline
+                            style={[
+                                styles.textInput,
+                                {
+                                    backgroundColor:
+                                        theme.background,
+                                    color: theme.text
+                                }
+                            ]}
+                            value={prompt}
+                            onChangeText={setPrompt}
+                        />
+                        {prompt ? (
+                            <TouchableOpacity
+                                style={styles.clearButton}
+                            >
+                                <Ionicons
+                                    name={
+                                        "trash-bin-outline"
+                                    }
+                                    size={24}
+                                    color={theme.secondary}
+                                />
+                            </TouchableOpacity>
+                        ) : null}
+                    </View>
+                </View>
+
+                {/**Generate button */}
+                <TouchableOpacity
+                    style={[
+                        styles.generateButton,
+                        {
+                            backgroundColor:
+                                theme.background
+                        }
+                    ]}
+                >
+                    {loading ? (
+                        <ActivityIndicator
+                            size="small"
+                            color="#fff"
+                        />
+                    ) : (
+                        <Text
+                            style={[
+                                styles.generateText,
+                                { color: theme.text }
+                            ]}
+                        >
+                            Generate
+                        </Text>
+                    )}
+                </TouchableOpacity>
+
+                {/**Description */}
+                {!image && (
+                    <Text style={styles.description}>
+                        This is a demo of DreamAI, a
+                        generative AI app that allows you to
+                        generate images based on your
+                        prompts. DreamAI uses the Stable
+                        Diffusion model to generate images,
+                        which means it can create realistic
+                        and detailed images.
                     </Text>
                 )}
-            </TouchableOpacity>
 
-            {/**Description */}
-            {!image && (
-                <Text style={styles.description}>
-                    This is a demo of DreamAI, a generative
-                    AI app that allows you to generate
-                    images based on your prompts. DreamAI
-                    uses the Stable Diffusion model to
-                    generate images, which means it can
-                    create realistic and detailed images.
-                </Text>
-            )}
+                {image && (
+                    <View style={styles.imageWrapper}>
+                        <ImageCard
+                            item={{
+                                imageUrl: image,
+                                prompt: "Generate an AI image"
+                            }}
+                        />
+                    </View>
+                )}
 
-            {image && (
-                <View style={styles.imageWrapper}>
-                    <ImageCard
-                        item={{
-                            imageUrl: image,
-                            prompt: "Generate an AI image"
-                        }}
-                    />
-                </View>
-            )}
-
-            {/**Footer */}
-            {!image && (
-                <Text style={styles.footer}>
-                    Made with ❤️ by Nzemia
-                </Text>
-            )}
-        </ScrollView>
+                {/**Footer */}
+                {!image && (
+                    <Text style={styles.footer}>
+                        Made with ❤️ by Nzemia
+                    </Text>
+                )}
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
@@ -123,7 +168,6 @@ export default HomeScreen
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        backgroundColor: colors.primary,
         paddingHorizontal: 20,
         justifyContent: "space-between",
         paddingBottom: 30
@@ -133,7 +177,7 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     appName: {
-        color: colors.secondary,
+        //color: colors.secondary,
         fontFamily: fontFamily.bold,
         fontSize: 32,
         textAlign: "center"
@@ -160,8 +204,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "#565656",
         borderRadius: 10,
-        backgroundColor: "#222",
-        color: colors.secondary,
         paddingHorizontal: 15,
         paddingVertical: 10,
         fontFamily: fontFamily.regular,
@@ -174,7 +216,6 @@ const styles = StyleSheet.create({
     },
     generateButton: {
         marginTop: 20,
-        backgroundColor: "#000",
         paddingVertical: 15,
         paddingHorizontal: 30,
         borderRadius: 10,
@@ -185,7 +226,6 @@ const styles = StyleSheet.create({
         borderColor: "#f8f2f2"
     },
     generateText: {
-        color: "#fff",
         fontFamily: fontFamily.semiBold,
         fontSize: 20
     },
