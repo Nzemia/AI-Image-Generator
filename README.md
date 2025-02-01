@@ -9,3 +9,7 @@
 `npm i --save-dev @types/react-native-vector-icons`
 
 `npm install --save react-native-vector-icons`
+
+`npm i react-native-blob-util`
+
+`npm install --save react-native-blob-util`

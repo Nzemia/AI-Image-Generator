@@ -10,7 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
 import { fontFamily } from "@/constants/fonts"
 import ImageCard from "@/components/ImageCard"
-import { AntDesign, Ionicons } from "@expo/vector-icons"
+import {  Ionicons } from "@expo/vector-icons"
 
 const LikeScreen = () => {
     const { theme } = useTheme()

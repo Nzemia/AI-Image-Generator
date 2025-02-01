@@ -1,4 +1,5 @@
 import {
+    Alert,
     Image,
     Modal,
     StyleSheet,
@@ -6,7 +7,7 @@ import {
     TouchableOpacity,
     View
 } from "react-native"
-import React from "react"
+import React, { useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
 import { fontFamily } from "@/constants/fonts"
@@ -15,9 +16,77 @@ import {
     FontAwesome,
     FontAwesome6
 } from "@expo/vector-icons"
+import * as FileSystem from "expo-file-system"
+import * as MediaLibrary from "expo-media-library"
 
-const ImageCard = ({ item }: { item: any }) => {
+const ImageCard = ({ item }: any) => {
     const { theme } = useTheme()
+
+    const [downloading, setDownloading] = useState(false)
+
+    const [downloadProgress, setDownloadProgress] =
+        useState(0)
+
+    const handleDownload = async () => {
+        const imageUrl = item.imageUrl
+        const fileName = `downloaded_image_ai_${Date.now()}.jpg`
+        const fileUri = `${FileSystem.documentDirectory}${fileName}`
+
+        try {
+            setDownloading(true)
+
+            const downloadResumable =
+                FileSystem.createDownloadResumable(
+                    imageUrl,
+                    fileUri,
+                    {},
+                    ({
+                        totalBytesWritten,
+                        totalBytesExpectedToWrite
+                    }) => {
+                        const progress =
+                            (totalBytesWritten /
+                                totalBytesExpectedToWrite) *
+                            100
+                        setDownloadProgress(
+                            Math.floor(progress)
+                        )
+                    }
+                )
+
+            const downloadResult =
+                await downloadResumable.downloadAsync()
+
+            if (
+                downloadResult &&
+                downloadResult.status === 200
+            ) {
+                const { status } =
+                    await MediaLibrary.requestPermissionsAsync()
+                if (status !== "granted") {
+                    throw new Error(
+                        "Permission to access media library is required."
+                    )
+                }
+
+                await MediaLibrary.createAssetAsync(
+                    downloadResult.uri
+                )
+
+                Alert.alert(
+                    "Success",
+                    "Image downloaded and saved to gallery!"
+                )
+            } else {
+                throw new Error("Failed to download image.")
+            }
+        } catch (err) {
+            Alert.alert("Error", "Failed to download image")
+        } finally {
+            setDownloading(false)
+            setDownloadProgress(0)
+        }
+    }
 
     return (
         <SafeAreaView
@@ -60,6 +129,7 @@ const ImageCard = ({ item }: { item: any }) => {
                                     theme.secondary
                             }
                         ]}
+                        onPress={handleDownload}
                     >
                         <FontAwesome
                             name="download"
@@ -118,7 +188,8 @@ const ImageCard = ({ item }: { item: any }) => {
                 <Modal
                     transparent={true}
                     animationType="fade"
-                    visible={true}
+                    //visible={true}
+                    visible={downloading}
                 >
                     <View
                         style={[
@@ -146,7 +217,7 @@ const ImageCard = ({ item }: { item: any }) => {
                             <Text
                                 style={styles.progressText}
                             >
-                                0%
+                                {downloadProgress}%
                             </Text>
 
                             <Text
@@ -170,7 +241,9 @@ const ImageCard = ({ item }: { item: any }) => {
                                 <View
                                     style={[
                                         styles.progressBar,
-                                        { width: `${50}%` },
+                                        {
+                                            width: `${downloadProgress}%`
+                                        },
                                         {
                                             backgroundColor:
                                                 "#76c7c0"
