@@ -1,5 +1,6 @@
 import {
     Image,
+    Modal,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -112,6 +113,74 @@ const ImageCard = ({ item }: { item: any }) => {
                         />
                     </TouchableOpacity>
                 </View>
+
+                {/** modal container */}
+                <Modal
+                    transparent={true}
+                    animationType="fade"
+                    visible={true}
+                >
+                    <View
+                        style={[
+                            styles.overlay,
+                            {
+                                backgroundColor:
+                                    "rgba(0,0,0,0.7)"
+                            }
+                        ]}
+                    >
+                        <View
+                            style={[
+                                styles.progressContainer,
+                                {
+                                    backgroundColor: "#222"
+                                }
+                            ]}
+                        >
+                            <Text
+                                style={styles.progressTitle}
+                            >
+                                Downloading Image...
+                            </Text>
+
+                            <Text
+                                style={styles.progressText}
+                            >
+                                0%
+                            </Text>
+
+                            <Text
+                                style={
+                                    styles.progressDescription
+                                }
+                            >
+                                Please wait while the image
+                                is being downloaded!
+                            </Text>
+
+                            <View
+                                style={[
+                                    styles.progressBarContainer,
+                                    {
+                                        backgroundColor:
+                                            theme.background
+                                    }
+                                ]}
+                            >
+                                <View
+                                    style={[
+                                        styles.progressBar,
+                                        { width: `${50}%` },
+                                        {
+                                            backgroundColor:
+                                                "#76c7c0"
+                                        }
+                                    ]}
+                                ></View>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </SafeAreaView>
     )
@@ -146,5 +215,42 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 50,
         alignItems: "center"
+    },
+    overlay: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    progressContainer: {
+        width: "80%",
+        padding: 20,
+        borderRadius: 10,
+        alignItems: "center"
+    },
+    progressTitle: {
+        fontFamily: fontFamily.bold,
+        fontSize: 20,
+        marginBottom: 10
+    },
+    progressText: {
+        fontFamily: fontFamily.regular,
+        fontSize: 20,
+        marginBottom: 10
+    },
+    progressDescription: {
+        fontFamily: fontFamily.light,
+        fontSize: 14,
+        textAlign: "center",
+        marginBottom: 10
+    },
+    progressBarContainer: {
+        width: "100%",
+        height: 10,
+        borderRadius: 10,
+        marginTop: 10
+    },
+    progressBar: {
+        height: 10,
+        borderRadius: 5
     }
 })

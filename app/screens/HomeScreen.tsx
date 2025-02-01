@@ -18,13 +18,11 @@ import { useTheme } from "@/constants/ThemeContext"
 const HomeScreen = () => {
     const { theme } = useTheme()
     const [prompt, setPrompt] = useState("")
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)   
     const [image, setImage] = useState(
         "https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_640.jpg"
     )
-    const [imageUrl, setImageUrl] = useState("")
     
-
     const handleOpenLink = () => {
         const url = "https://github.com/nzemia"
         Linking.openURL(url).catch(err =>
@@ -63,8 +61,8 @@ const HomeScreen = () => {
                         <Text style={styles.madeBy}>
                             Click{" "}
                             <Text style={styles.name}>
-                                Nzemia{" "}
-                            </Text>
+                                Nzemia
+                            </Text>{" "}
                             to view more of my work
                         </Text>
                     </TouchableOpacity>
@@ -180,8 +178,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 20
     },
-    appName: {
-        //color: colors.secondary,
+    appName: {        
         fontFamily: fontFamily.bold,
         fontSize: 32,
         textAlign: "center"
