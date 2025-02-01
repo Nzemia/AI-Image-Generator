@@ -19,7 +19,8 @@ const HomeScreen = () => {
     const { theme } = useTheme()
     const [prompt, setPrompt] = useState("")
     const [loading, setLoading] = useState(false)
-    const [image, setImage] = useState("")
+    const [image, setImage] = useState()
+    const [imageUrl, setImageUrl] = useState("")
 
     const handleOpenLink = () => {
         const url = "https://github.com/nzemia"
