@@ -75,6 +75,9 @@ const DiscoverScreen = () => {
                     renderItem={({ index, item }) => {
                         return <ImageCard item={item} />
                     }}
+                    keyExtractor={item =>
+                        item.id.toString()
+                    }
                     //keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={

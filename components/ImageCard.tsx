@@ -122,9 +122,9 @@ export default ImageCard
 const styles = StyleSheet.create({
     imageCard: {
         width: "100%",
-        padding: 10,
-        marginBottom: 3,
-        borderRadius: 10
+        padding: 15,
+        marginBottom: 20,
+        borderRadius: 8
     },
     image: {
         width: "100%",
