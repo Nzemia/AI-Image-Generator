@@ -5,13 +5,13 @@
 //     inactiveTabColor: "#9DB2CE"
 // }
 
-export const spacing = {
-    xs: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-    xl: 32
-}
+// export const spacing = {
+//     xs: 4,
+//     sm: 8,
+//     md: 16,
+//     lg: 24,
+//     xl: 32
+// }
 
 export const fontSize = {
     sm: 12,
@@ -32,5 +32,5 @@ export default {
     //colors,
     fontSize,
     fontFamily,
-    spacing
+    //spacing
 }

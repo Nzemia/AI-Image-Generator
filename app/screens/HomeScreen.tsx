@@ -19,8 +19,11 @@ const HomeScreen = () => {
     const { theme } = useTheme()
     const [prompt, setPrompt] = useState("")
     const [loading, setLoading] = useState(false)
-    const [image, setImage] = useState()
+    const [image, setImage] = useState(
+        "https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_640.jpg"
+    )
     const [imageUrl, setImageUrl] = useState("")
+    
 
     const handleOpenLink = () => {
         const url = "https://github.com/nzemia"
@@ -147,7 +150,7 @@ const HomeScreen = () => {
                         <ImageCard
                             item={{
                                 imageUrl: image,
-                                prompt: "Generate an AI image"
+                                prompt: "Generated AI image"
                             }}
                         />
                     </View>

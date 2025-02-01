@@ -44,6 +44,7 @@ const ImageCard = ({ item }: { item: any }) => {
                         styles.promptText,
                         { color: theme.text }
                     ]}
+                    numberOfLines={2}
                 >
                     {item.prompt || "No prompt"}
                 </Text>
@@ -53,7 +54,10 @@ const ImageCard = ({ item }: { item: any }) => {
                     <TouchableOpacity
                         style={[
                             styles.actionButton,
-                            { backgroundColor: "#444" }
+                            {
+                                backgroundColor:
+                                    theme.secondary
+                            }
                         ]}
                     >
                         <FontAwesome
@@ -65,7 +69,10 @@ const ImageCard = ({ item }: { item: any }) => {
                     <TouchableOpacity
                         style={[
                             styles.actionButton,
-                            { backgroundColor: "#444" }
+                            {
+                                backgroundColor:
+                                    theme.secondary
+                            }
                         ]}
                     >
                         <Feather
@@ -77,7 +84,10 @@ const ImageCard = ({ item }: { item: any }) => {
                     <TouchableOpacity
                         style={[
                             styles.actionButton,
-                            { backgroundColor: "#444" }
+                            {
+                                backgroundColor:
+                                    theme.secondary
+                            }
                         ]}
                     >
                         <FontAwesome6
@@ -89,7 +99,10 @@ const ImageCard = ({ item }: { item: any }) => {
                     <TouchableOpacity
                         style={[
                             styles.actionButton,
-                            { backgroundColor: "#444" }
+                            {
+                                backgroundColor:
+                                    theme.secondary
+                            }
                         ]}
                     >
                         <FontAwesome
@@ -109,9 +122,9 @@ export default ImageCard
 const styles = StyleSheet.create({
     imageCard: {
         width: "100%",
-        padding: 20,
-        marginBottom: 20,
-        borderRadius: 8
+        padding: 10,
+        marginBottom: 3,
+        borderRadius: 10
     },
     image: {
         width: "100%",
