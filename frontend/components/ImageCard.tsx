@@ -9,13 +9,13 @@ import {
 import React, { useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
-import { fontFamily } from "@/constants/fonts"
 import {
     Feather,
     FontAwesome,
     FontAwesome6
 } from "@expo/vector-icons"
 
+import { fontFamily } from "@/constants/fonts"
 import { handleDownload } from "@/utils/downloadImage"
 import { shareImage } from "@/utils/shareImage"
 import { copyToClipboard } from "@/utils/copyImage"
