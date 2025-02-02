@@ -10,6 +10,10 @@
 
 `npm install --save react-native-vector-icons`
 
-`npm i react-native-blob-util`
+`npx expo install expo-media-library`
 
-`npm install --save react-native-blob-util`
+`npx expo install expo-file-system`
+
+`npx expo install expo-sharing`
+
+`npx expo install expo-clipboard`

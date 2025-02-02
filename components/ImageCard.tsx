@@ -18,6 +18,7 @@ import {
 
 import { handleDownload } from "@/utils/downloadImage"
 import { shareImage } from "@/utils/shareImage"
+import { copyToClipboard } from "@/utils/copyImage"
 
 const ImageCard = ({ item }: any) => {
     const { theme } = useTheme()
@@ -30,6 +31,11 @@ const ImageCard = ({ item }: any) => {
     /**share image */
     const handleShare = async () => {
         await shareImage(item.imageUrl)
+    }
+
+    /**copy image */
+    const handleCopy = async () => {
+        await copyToClipboard(item.imageUrl)
     }
 
     return (
@@ -114,6 +120,7 @@ const ImageCard = ({ item }: any) => {
                                     theme.secondary
                             }
                         ]}
+                        onPress={handleCopy}
                     >
                         <FontAwesome6
                             name="copy"
