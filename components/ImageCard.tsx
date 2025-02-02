@@ -1,5 +1,4 @@
 import {
-    Alert,
     Image,
     Modal,
     StyleSheet,
@@ -16,8 +15,9 @@ import {
     FontAwesome,
     FontAwesome6
 } from "@expo/vector-icons"
-import * as FileSystem from "expo-file-system"
-import * as MediaLibrary from "expo-media-library"
+
+import { handleDownload } from "@/utils/downloadImage"
+import { shareImage } from "@/utils/shareImage"
 
 const ImageCard = ({ item }: any) => {
     const { theme } = useTheme()
@@ -27,65 +27,9 @@ const ImageCard = ({ item }: any) => {
     const [downloadProgress, setDownloadProgress] =
         useState(0)
 
-    const handleDownload = async () => {
-        const imageUrl = item.imageUrl
-        const fileName = `downloaded_image_ai_${Date.now()}.jpg`
-        const fileUri = `${FileSystem.documentDirectory}${fileName}`
-
-        try {
-            setDownloading(true)
-
-            const downloadResumable =
-                FileSystem.createDownloadResumable(
-                    imageUrl,
-                    fileUri,
-                    {},
-                    ({
-                        totalBytesWritten,
-                        totalBytesExpectedToWrite
-                    }) => {
-                        const progress =
-                            (totalBytesWritten /
-                                totalBytesExpectedToWrite) *
-                            100
-                        setDownloadProgress(
-                            Math.floor(progress)
-                        )
-                    }
-                )
-
-            const downloadResult =
-                await downloadResumable.downloadAsync()
-
-            if (
-                downloadResult &&
-                downloadResult.status === 200
-            ) {
-                const { status } =
-                    await MediaLibrary.requestPermissionsAsync()
-                if (status !== "granted") {
-                    throw new Error(
-                        "Permission to access media library is required."
-                    )
-                }
-
-                await MediaLibrary.createAssetAsync(
-                    downloadResult.uri
-                )
-
-                Alert.alert(
-                    "Success",
-                    "Image downloaded and saved to gallery!"
-                )
-            } else {
-                throw new Error("Failed to download image.")
-            }
-        } catch (err) {
-            Alert.alert("Error", "Failed to download image")
-        } finally {
-            setDownloading(false)
-            setDownloadProgress(0)
-        }
+    /**share image */
+    const handleShare = async () => {
+        await shareImage(item.imageUrl)
     }
 
     return (
@@ -121,6 +65,7 @@ const ImageCard = ({ item }: any) => {
 
                 {/**Buttons */}
                 <View style={styles.buttonsContainer}>
+                    {/**Download button */}
                     <TouchableOpacity
                         style={[
                             styles.actionButton,
@@ -129,7 +74,13 @@ const ImageCard = ({ item }: any) => {
                                     theme.secondary
                             }
                         ]}
-                        onPress={handleDownload}
+                        onPress={() =>
+                            handleDownload(
+                                item.imageUrl,
+                                setDownloading,
+                                setDownloadProgress
+                            )
+                        }
                     >
                         <FontAwesome
                             name="download"
@@ -137,6 +88,7 @@ const ImageCard = ({ item }: any) => {
                             color={theme.text}
                         />
                     </TouchableOpacity>
+                    {/**Share button */}
                     <TouchableOpacity
                         style={[
                             styles.actionButton,
@@ -145,6 +97,7 @@ const ImageCard = ({ item }: any) => {
                                     theme.secondary
                             }
                         ]}
+                        onPress={handleShare}
                     >
                         <Feather
                             name="share-2"
@@ -152,6 +105,7 @@ const ImageCard = ({ item }: any) => {
                             color={theme.text}
                         />
                     </TouchableOpacity>
+                    {/**Copy button */}
                     <TouchableOpacity
                         style={[
                             styles.actionButton,
@@ -167,6 +121,7 @@ const ImageCard = ({ item }: any) => {
                             color={theme.text}
                         />
                     </TouchableOpacity>
+                    {/**Like button */}
                     <TouchableOpacity
                         style={[
                             styles.actionButton,
