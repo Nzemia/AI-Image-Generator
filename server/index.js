@@ -7,6 +7,8 @@ const app = express()
 
 app.use(express.json())
 
+app.use("/api", imageRoutes)
+
 mongoose
     .connect(process.env.MONGO_DB_URI)
     .then(() => {
@@ -16,7 +18,9 @@ mongoose
         console.log(err)
     })
 
-app.use("/api", imageRoutes)
+app.get("/", (req, res) => {
+    res.send("Hello World!")
+})
 
 const PORT = 3000
 
