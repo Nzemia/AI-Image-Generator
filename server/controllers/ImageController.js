@@ -32,7 +32,6 @@ const generateImage = async (req, res) => {
         })
         await newImage.save()
 
-
         return res.status(200).json({
             imageUrl
         })
@@ -43,6 +42,33 @@ const generateImage = async (req, res) => {
     }
 }
 
+const getImage = async (req, res) => {
+    try {
+        // pagination
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 10
+        const skip = (page - 1) * limit
+        const totalImages =
+            await ImageModal.countDocuments()
+        const images = await ImageModal.find()
+            .skip(skip)
+            .limit(limit)
+            .sort({ createdAt: -1 })
+
+        const data = {
+            images,
+            totalPages: Math.ceil(totalImages / limit),
+            currentPage: page
+        }
+        return res.status(200).json(data)
+    } catch (error) {
+        return res.status(500).json({
+            error: error.message
+        })
+    }
+}
+
 module.exports = {
-    generateImage
+    generateImage,
+    getImage
 }
