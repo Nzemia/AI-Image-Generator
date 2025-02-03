@@ -14,21 +14,37 @@ import { Ionicons } from "@expo/vector-icons"
 import ImageCard from "@/components/ImageCard"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
+import { handleGenerateImage } from "@/utils/generateImage"
 
 const HomeScreen = () => {
     const { theme } = useTheme()
     const [prompt, setPrompt] = useState("")
-    const [loading, setLoading] = useState(false)   
-    const [image, setImage] = useState(
-        "https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_640.jpg"
-    )
-    
+    const [loading, setLoading] = useState(false)
+    const [image, setImage] = useState("")
+
     const handleOpenLink = () => {
         const url = "https://github.com/nzemia"
         Linking.openURL(url).catch(err =>
             console.error("An error occurred", err)
         )
     }
+    
+
+    const onGenerateImage = async () => {
+        try {
+            await handleGenerateImage(
+                prompt,
+                setLoading,
+                setImage
+            )
+        } catch (error) {
+            console.error(
+                "Error in Generating Image:",
+                error
+            )
+        }
+    }
+
 
     return (
         <SafeAreaView
@@ -71,7 +87,6 @@ const HomeScreen = () => {
                 {/**Input container */}
                 <View style={styles.textInputWrapper}>
                     <View style={styles.textInputContainer}>
-                        {}
                         <TextInput
                             placeholder="Enter your prompt here..."
                             placeholderTextColor={"#808080"}
@@ -112,6 +127,7 @@ const HomeScreen = () => {
                                 theme.background
                         }
                     ]}
+                    onPress={onGenerateImage}
                 >
                     {loading ? (
                         <ActivityIndicator
@@ -178,7 +194,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 20
     },
-    appName: {        
+    appName: {
         fontFamily: fontFamily.bold,
         fontSize: 32,
         textAlign: "center"
@@ -216,8 +232,8 @@ const styles = StyleSheet.create({
         top: 10
     },
     generateButton: {
-        marginTop: 20,
-        paddingVertical: 15,
+        marginTop: 15,
+        paddingVertical: 10,
         paddingHorizontal: 30,
         borderRadius: 10,
         alignItems: "center",
@@ -244,8 +260,7 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     imageWrapper: {
-        marginTop: 20,
-        alignItems: "center",
-        elevation: 10
+        marginTop: 5,
+        alignContent: "center"
     }
 })

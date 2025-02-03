@@ -1,5 +1,4 @@
 import {
-    Image,
     Modal,
     StyleSheet,
     Text,
@@ -19,6 +18,7 @@ import { fontFamily } from "@/constants/fonts"
 import { handleDownload } from "@/utils/downloadImage"
 import { shareImage } from "@/utils/shareImage"
 import { copyToClipboard } from "@/utils/copyImage"
+import { Image } from "react-native"
 
 const ImageCard = ({ item }: any) => {
     const { theme } = useTheme()
@@ -37,6 +37,7 @@ const ImageCard = ({ item }: any) => {
     const handleCopy = async () => {
         await copyToClipboard(item.imageUrl)
     }
+    console.log("Image URL:", item.imageUrl)
 
     return (
         <SafeAreaView
@@ -51,7 +52,7 @@ const ImageCard = ({ item }: any) => {
                     { backgroundColor: theme.background }
                 ]}
             >
-                {/**Image */}
+                {/** Image */}
                 <Image
                     source={{ uri: item.imageUrl }}
                     style={styles.image}
