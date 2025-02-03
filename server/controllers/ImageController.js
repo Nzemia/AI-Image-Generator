@@ -1,9 +1,10 @@
 const Together = require("together-ai")
 const { uploadBase64Image } = require("../utils")
+const ImageModal = require("../model/ImageModel")
 
 const generateImage = async (req, res) => {
     try {
-        // together ai flux module
+        // together ai flux model
         const apiKey = process.env.TOGETHER_API_KEY
         const together = new Together({ apiKey })
         const { prompt } = req.body
@@ -24,8 +25,16 @@ const generateImage = async (req, res) => {
             base64Image
         )
 
+        //insert to mongodb database
+        const newImage = new ImageModal({
+            imageUrl,
+            prompt
+        })
+        await newImage.save()
+
+
         return res.status(200).json({
-            message: imageUrl
+            imageUrl
         })
     } catch (error) {
         return res.status(500).json({

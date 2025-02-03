@@ -1,10 +1,21 @@
 require("dotenv").config()
 const express = require("express")
 const imageRoutes = require("./routes/ImageRoutes")
+//const connectDB = require("./config/db") connectDB()
+const mongoose = require("mongoose")
 
 const app = express()
 
 app.use(express.json())
+
+mongoose
+    .connect(process.env.MONGO_DB_URI)
+    .then(() => {
+        console.log("Connected to MongoDB!")
+    })
+    .catch(err => {
+        console.log(err)
+    })
 
 app.use("/api", imageRoutes)
 
