@@ -1,7 +1,6 @@
 require("dotenv").config()
 const express = require("express")
 const imageRoutes = require("./routes/ImageRoutes")
-//const connectDB = require("./config/db") connectDB()
 const mongoose = require("mongoose")
 
 const app = express()
