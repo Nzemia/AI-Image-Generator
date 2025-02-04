@@ -17,7 +17,6 @@ import ImageCard from "@/components/ImageCard"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
 import { handleGenerateImage } from "@/utils/generateImage"
-import { v4 as uuidv4 } from "uuid"
 
 const HomeScreen = () => {
     const { theme } = useTheme()
@@ -186,8 +185,7 @@ const HomeScreen = () => {
                 {image && (
                     <View style={styles.imageWrapper}>
                         <ImageCard
-                            item={{
-                                _id: uuidv4(),
+                            item={{                               
                                 imageUrl: image,
                                 prompt: "Generated AI image",
 

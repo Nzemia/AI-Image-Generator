@@ -1,6 +1,5 @@
 import {
     FlatList,
-    RefreshControl,
     StyleSheet,
     Text,
     View
@@ -49,6 +48,9 @@ const LikeScreen = () => {
                 <FlatList
                     data={likedImages}
                     renderItem={({ item }) => {
+                        if (!item.imageUrl || !item._id) {
+                            return null
+                        }
                         return (
                             <ImageCard
                                 key={item._id}

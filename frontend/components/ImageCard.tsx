@@ -5,11 +5,7 @@ import {
     TouchableOpacity,
     View
 } from "react-native"
-import React, {
-    useContext,
-    useEffect,
-    useState
-} from "react"
+import React, { useContext, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
 import {
@@ -27,12 +23,11 @@ import { copyToClipboard } from "@/utils/copyImage"
 import { LikeImagesContext } from "@/context/LikeImageContext"
 
 type ImageItem = {
-    _id: string
+    _id?: string
     imageUrl: string
     prompt?: string
 }
 
-// Define the props for the ImageCard component
 type ImageCardProps = {
     item: ImageItem
 }
@@ -44,7 +39,6 @@ const ImageCard = ({ item }: ImageCardProps) => {
 
     const [downloadProgress, setDownloadProgress] =
         useState(0)
-    
 
     const context = useContext(LikeImagesContext)
     if (!context) {
@@ -54,12 +48,9 @@ const ImageCard = ({ item }: ImageCardProps) => {
     }
     const { likedImages, toggleLikeImage } = context
 
-    
     const isLiked = likedImages.some(
         likeImage => likeImage._id === item._id
     )
-
-
 
     /**share image */
     const handleShare = async () => {
@@ -74,7 +65,8 @@ const ImageCard = ({ item }: ImageCardProps) => {
 
     /**Like image */
     const handleLike = () => {
-        toggleLikeImage(item)
+        const validId = item._id || "fallback_id"
+        toggleLikeImage({ ...item, _id: validId })
     }
     return (
         <SafeAreaView

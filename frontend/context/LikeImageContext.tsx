@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { ToastAndroid } from "react-native"
 
 type Image = {
+    imageUrl: any
     _id: string
 }
 
