@@ -44,13 +44,36 @@ const generateImage = async (req, res) => {
 
 const getImage = async (req, res) => {
     try {
-        // pagination
         const page = parseInt(req.query.page) || 1
         const limit = parseInt(req.query.limit) || 10
         const skip = (page - 1) * limit
-        const totalImages =
-            await ImageModal.countDocuments()
-        const images = await ImageModal.find()
+
+        const searchQuery = req.query.query?.trim() || ""
+
+        let filter = {}
+        if (searchQuery) {
+            filter = {
+                $or: [
+                    {
+                        prompt: {
+                            $regex: searchQuery,
+                            $options: "i"
+                        }
+                    },
+                    {
+                        tags: {
+                            $regex: searchQuery,
+                            $options: "i"
+                        }
+                    }
+                ]
+            }
+        }
+
+        const totalImages = await ImageModal.countDocuments(
+            filter
+        )
+        const images = await ImageModal.find(filter)
             .skip(skip)
             .limit(limit)
             .sort({ createdAt: -1 })

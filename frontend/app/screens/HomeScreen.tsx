@@ -1,10 +1,12 @@
 import {
     ActivityIndicator,
+    Keyboard,
     Linking,
     ScrollView,
     StyleSheet,
     Text,
     TextInput,
+    ToastAndroid,
     TouchableOpacity,
     View
 } from "react-native"
@@ -30,6 +32,16 @@ const HomeScreen = () => {
     }
 
     const onGenerateImage = async () => {
+        
+        if (!prompt.trim()) {
+            return ToastAndroid.show(
+                "Please enter a prompt!",
+                ToastAndroid.SHORT
+            )
+        }
+
+        Keyboard.dismiss()
+
         try {
             await handleGenerateImage(
                 prompt,
@@ -92,7 +104,7 @@ const HomeScreen = () => {
                         <TextInput
                             placeholder="Enter your prompt here..."
                             placeholderTextColor={"#808080"}
-                            multiline
+                            //multiline
                             style={[
                                 styles.textInput,
                                 {
@@ -103,6 +115,10 @@ const HomeScreen = () => {
                             ]}
                             value={prompt}
                             onChangeText={setPrompt}
+                            onSubmitEditing={
+                                onGenerateImage
+                            }
+                            returnKeyType="done"
                         />
                         {prompt ? (
                             <TouchableOpacity
@@ -132,12 +148,15 @@ const HomeScreen = () => {
                                 theme.background
                         }
                     ]}
-                    onPress={onGenerateImage}
+                    onPress={() => {
+                        Keyboard.dismiss()
+                        onGenerateImage()
+                    }}
                 >
                     {loading ? (
                         <ActivityIndicator
                             size="small"
-                            color="#fff"
+                            color={theme.text}
                         />
                     ) : (
                         <Text
@@ -213,7 +232,6 @@ const styles = StyleSheet.create({
     name: {
         textDecorationLine: "underline"
     },
-
     textInputWrapper: {
         marginTop: 20
     },
