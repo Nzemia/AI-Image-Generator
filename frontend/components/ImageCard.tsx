@@ -5,28 +5,61 @@ import {
     TouchableOpacity,
     View
 } from "react-native"
-import React, { useState } from "react"
+import React, {
+    useContext,
+    useEffect,
+    useState
+} from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
 import {
     Feather,
     FontAwesome,
-    FontAwesome6
+    FontAwesome6,
+    Ionicons
 } from "@expo/vector-icons"
+import { Image } from "react-native"
 
 import { fontFamily } from "@/constants/fonts"
 import { handleDownload } from "@/utils/downloadImage"
 import { shareImage } from "@/utils/shareImage"
 import { copyToClipboard } from "@/utils/copyImage"
-import { Image } from "react-native"
+import { LikeImagesContext } from "@/context/LikeImageContext"
 
-const ImageCard = ({ item }: any) => {
+type ImageItem = {
+    _id: string
+    imageUrl: string
+    prompt?: string
+}
+
+// Define the props for the ImageCard component
+type ImageCardProps = {
+    item: ImageItem
+}
+
+const ImageCard = ({ item }: ImageCardProps) => {
     const { theme } = useTheme()
 
     const [downloading, setDownloading] = useState(false)
 
     const [downloadProgress, setDownloadProgress] =
         useState(0)
+    
+
+    const context = useContext(LikeImagesContext)
+    if (!context) {
+        throw new Error(
+            "LikeImagesContext must be used within a LikeImageProvider"
+        )
+    }
+    const { likedImages, toggleLikeImage } = context
+
+    
+    const isLiked = likedImages.some(
+        likeImage => likeImage._id === item._id
+    )
+
+
 
     /**share image */
     const handleShare = async () => {
@@ -37,8 +70,12 @@ const ImageCard = ({ item }: any) => {
     const handleCopy = async () => {
         await copyToClipboard(item.imageUrl)
     }
-    console.log("Image URL:", item.imageUrl)
+    //console.log("Image URL:", item.imageUrl)
 
+    /**Like image */
+    const handleLike = () => {
+        toggleLikeImage(item)
+    }
     return (
         <SafeAreaView
             style={{
@@ -138,12 +175,22 @@ const ImageCard = ({ item }: any) => {
                                     theme.secondary
                             }
                         ]}
+                        onPress={handleLike}
                     >
-                        <FontAwesome
+                        <Ionicons
+                            name={
+                                isLiked
+                                    ? "heart"
+                                    : "heart-outline"
+                            }
+                            size={24}
+                            color={isLiked ? "red" : "gray"}
+                        />
+                        {/* <FontAwesome
                             name="heart"
                             size={20}
                             color={theme.text}
-                        />
+                        /> */}
                     </TouchableOpacity>
                 </View>
 

@@ -17,6 +17,7 @@ import ImageCard from "@/components/ImageCard"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
 import { handleGenerateImage } from "@/utils/generateImage"
+import { v4 as uuidv4 } from "uuid"
 
 const HomeScreen = () => {
     const { theme } = useTheme()
@@ -32,7 +33,6 @@ const HomeScreen = () => {
     }
 
     const onGenerateImage = async () => {
-        
         if (!prompt.trim()) {
             return ToastAndroid.show(
                 "Please enter a prompt!",
@@ -187,8 +187,10 @@ const HomeScreen = () => {
                     <View style={styles.imageWrapper}>
                         <ImageCard
                             item={{
+                                _id: uuidv4(),
                                 imageUrl: image,
-                                prompt: "Generated AI image"
+                                prompt: "Generated AI image",
+
                             }}
                         />
                     </View>

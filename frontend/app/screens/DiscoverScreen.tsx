@@ -18,7 +18,6 @@ import ImageCard from "@/components/ImageCard"
 import api from "@/utils/api"
 import { Feather } from "@expo/vector-icons"
 
-
 type ImageItem = {
     id: string
     imageUrl: string
@@ -176,9 +175,9 @@ const DiscoverScreen = () => {
                 {/** Content*/}
                 <FlatList
                     data={images}
-                    renderItem={({ item }) => (
-                        <ImageCard item={item} />
-                    )}
+                    renderItem={({ item }) => {
+                        return <ImageCard key={item.id} item={item} />
+                    }}
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={

@@ -5,44 +5,25 @@ import {
     Text,
     View
 } from "react-native"
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
 import { fontFamily } from "@/constants/fonts"
 import ImageCard from "@/components/ImageCard"
-import {  Ionicons } from "@expo/vector-icons"
+import { Ionicons } from "@expo/vector-icons"
+import { LikeImagesContext } from "@/context/LikeImageContext"
 
 const LikeScreen = () => {
     const { theme } = useTheme()
 
-    const [refresh, setRefresh] = useState(false)
-
-    const data = [
-        {
-            id: 1,
-            imageUrl:
-                "https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_640.jpg",
-            prompt: "Generate an AI image"
-        },
-        {
-            id: 2,
-            imageUrl:
-                "https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_640.jpg",
-            prompt: "Generate an AI image"
-        },
-        {
-            id: 3,
-            imageUrl:
-                "https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_640.jpg",
-            prompt: "Generate an AI image"
-        }
-    ]
-
-    const onRefresh = () => {
-        setRefresh(true)
-
-        setRefresh(false)
+    const context = useContext(LikeImagesContext)
+    if (!context) {
+        throw new Error(
+            "LikeImagesContext must be used within a LikeImageProvider"
+        )
     }
+    const { likedImages } = context
+
     return (
         <SafeAreaView
             style={{
@@ -66,27 +47,23 @@ const LikeScreen = () => {
                 </Text>
 
                 <FlatList
-                    data={data}
-                    renderItem={({ index, item }) => {
-                        return <ImageCard item={item} />
+                    data={likedImages}
+                    renderItem={({ item }) => {
+                        return (
+                            <ImageCard
+                                key={item._id}
+                                item={item}
+                            />
+                        )
                     }}
-                    keyExtractor={item =>
-                        item.id.toString()
-                    }
+                    keyExtractor={item => item._id}
                     showsVerticalScrollIndicator={false}
                     bounces={false}
                     contentContainerStyle={[
                         styles.listContainer,
-                        data.length === 0 &&
+                        likedImages.length === 0 &&
                             styles.emptyListContainer
                     ]}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refresh}
-                            onRefresh={onRefresh}
-                            tintColor={theme.text}
-                        />
-                    }
                     ListEmptyComponent={
                         <View
                             style={
