@@ -28,7 +28,6 @@ const HomeScreen = () => {
             console.error("An error occurred", err)
         )
     }
-    
 
     const onGenerateImage = async () => {
         try {
@@ -45,6 +44,9 @@ const HomeScreen = () => {
         }
     }
 
+    const handleClearPrompt = () => {
+        setPrompt("")
+    }
 
     return (
         <SafeAreaView
@@ -105,13 +107,16 @@ const HomeScreen = () => {
                         {prompt ? (
                             <TouchableOpacity
                                 style={styles.clearButton}
+                                onPress={() =>
+                                    handleClearPrompt()
+                                }
                             >
                                 <Ionicons
                                     name={
                                         "trash-bin-outline"
                                     }
                                     size={24}
-                                    color={theme.secondary}
+                                    color={theme.text}
                                 />
                             </TouchableOpacity>
                         ) : null}
