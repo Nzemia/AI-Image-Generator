@@ -8,3 +8,7 @@ SUPABASE_URL=
 SUPABASE_ANON_KEY=
 MONGO_DB_URI=
 ```
+
+### Links
+
+- [Ads docs page](https://docs.page/invertase/react-native-google-mobile-ads)

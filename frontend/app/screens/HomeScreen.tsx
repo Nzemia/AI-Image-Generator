@@ -18,7 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useTheme } from "@/constants/ThemeContext"
 import { handleGenerateImage } from "@/utils/generateImage"
 
-const HomeScreen = () => {
+export default function HomeScreen() {
     const { theme } = useTheme()
     const [prompt, setPrompt] = useState("")
     const [loading, setLoading] = useState(false)
@@ -185,10 +185,9 @@ const HomeScreen = () => {
                 {image && (
                     <View style={styles.imageWrapper}>
                         <ImageCard
-                            item={{                               
+                            item={{
                                 imageUrl: image,
-                                prompt: "Generated AI image",
-
+                                prompt: "Generated AI image"
                             }}
                         />
                     </View>
@@ -205,7 +204,7 @@ const HomeScreen = () => {
     )
 }
 
-export default HomeScreen
+
 
 const styles = StyleSheet.create({
     container: {
