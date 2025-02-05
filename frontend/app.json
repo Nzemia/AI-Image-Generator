@@ -4,7 +4,7 @@
         "slug": "ai-image-generator",
         "version": "1.0.0",
         "orientation": "portrait",
-
+        "icon": "./assets/images/splash-screen.jpg",
         "scheme": "myapp",
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
@@ -12,6 +12,10 @@
             "supportsTablet": true
         },
         "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/images/splash-screen.jpg",
+                "backgroundColor": "#ffffff"
+            },
             "permissions": [
                 "WRITE_EXTERNAL_STORAGE",
                 "READ_EXTERNAL_STORAGE",
@@ -21,10 +25,22 @@
             ],
             "package": "com.anonymous.aiimagegenerator"
         },
-
+        "web": {
+            "bundler": "metro",
+            "output": "static",
+            "favicon": "./assets/images/favicon.png"
+        },
         "plugins": [
             "expo-router",
-
+            [
+                "expo-splash-screen",
+                {
+                    "image": "./assets/images/splash-screen.jpg",
+                    "resizeMode": "cover",
+                    "backgroundColor": "theme.background",
+                    "enableFullScreenImage_legacy": true
+                }
+            ],
             [
                 "expo-font",
                 {

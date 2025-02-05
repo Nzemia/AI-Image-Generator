@@ -28,7 +28,7 @@ const Tab = createBottomTabNavigator()
 //     ? TestIds.ADAPTIVE_BANNER
 //     : "ca-app-pub-yyyyyyyyyyyy/xxxxxxxxxxxx"
 
-export default function App() {
+export default function App() {    
     const { theme } = useTheme()
     return (
         <>
